@@ -1,0 +1,20 @@
+# Files here are NOT uploaded as Cloudflare Workers static assets.
+# Cloudflare runs `npm install` during the build because package.json exists,
+# so without this the build tries to publish node_modules and fails on
+# oversized binaries such as node_modules/workerd/bin/workerd.
+#
+# gitignore-style syntax. .assetsignore itself is excluded automatically.
+
+node_modules
+
+# Build inputs and tooling: styles.css is committed pre-built, so none of this
+# needs to be served.
+src
+package.json
+package-lock.json
+
+# Repo housekeeping. Only index.html and styles.css should be served.
+.claude
+README.md
+.gitignore
+.gitattributes

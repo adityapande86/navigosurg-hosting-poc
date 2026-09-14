@@ -42,6 +42,16 @@ wrong theme. The choice persists under the `navigosurg-theme` localStorage key.
 `@custom-variant dark` line in `src/input.css`. The OS setting is deliberately
 ignored, since the brief calls for dark by default.
 
+## Deploying
+
+Only `index.html` and `styles.css` are served. `.assetsignore` excludes
+everything else from the Cloudflare Workers asset upload — importantly
+`node_modules`, which the platform creates during its own `npm install` and
+which otherwise fails the build on oversized binaries
+(`node_modules/workerd/bin/workerd`).
+
+Add any new build-time-only file to `.assetsignore`.
+
 ## Build stamp
 
 The footer shows `env`, `commit`, and `built` values so it is always clear which
