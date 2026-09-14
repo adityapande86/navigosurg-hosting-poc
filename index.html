@@ -1,0 +1,185 @@
+<!doctype html>
+<!--
+  `dark` ships in the markup so dark is the default even with JavaScript
+  disabled. The head script below only ever *removes* it.
+-->
+<html lang="en" class="dark h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NavigoSurg — Hosting Proof of Concept</title>
+    <meta
+      name="description"
+      content="Deployment placeholder for NavigoSurg. If you can read this, the host is serving static assets correctly."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#020618" />
+    <link rel="icon" href="data:," />
+
+    <!--
+      Runs before first paint so a returning light-mode visitor never sees a
+      flash of dark. Deliberately inline and blocking: an external file could
+      paint before it loads.
+    -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem("navigosurg-theme") === "light") {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {
+          /* Private mode or blocked storage: keep the dark default. */
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body
+    class="flex h-full min-h-svh flex-col bg-white font-sans text-ink antialiased dark:bg-slate-950 dark:text-slate-100"
+  >
+    <div class="flex justify-end px-4 pt-4 sm:px-6 sm:pt-6">
+      <button
+        id="theme-toggle"
+        type="button"
+        class="rounded-full border border-slate-200 p-2.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200"
+        aria-label="Switch to light mode"
+        aria-pressed="true"
+      >
+        <!-- Sun: shown in dark mode, because clicking takes you to light. -->
+        <svg
+          class="hidden h-5 w-5 dark:block"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4.5" />
+          <path
+            d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M6.8 17.2 5 19"
+          />
+        </svg>
+        <!-- Moon: shown in light mode. -->
+        <svg
+          class="h-5 w-5 dark:hidden"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 13.5A9 9 0 1 1 10.5 3a7 7 0 0 0 10.5 10.5z" />
+        </svg>
+      </button>
+    </div>
+
+    <main class="flex flex-1 flex-col items-center justify-center px-6 pb-12 text-center">
+      <!-- Logo mark: a compass rose crossed with a targeting reticle. Inline SVG so
+           the page has no external image assets for the host to resolve. -->
+      <svg
+        class="h-16 w-16 text-brand-500 sm:h-20 sm:w-20 dark:text-brand-400"
+        viewBox="0 0 48 48"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        role="img"
+        aria-label="NavigoSurg logo"
+      >
+        <circle cx="24" cy="24" r="19" class="opacity-30" />
+        <circle cx="24" cy="24" r="12.5" />
+        <path d="M24 2v7M24 39v7M2 24h7M39 24h7" class="opacity-60" />
+        <path d="M30.5 17.5 26 26l-8.5 4.5L22 22z" fill="currentColor" stroke="none" />
+      </svg>
+
+      <h1 class="mt-7 text-4xl font-semibold tracking-tight sm:text-5xl">
+        Navigo<span class="text-brand-500 dark:text-brand-400">Surg</span>
+      </h1>
+
+      <p
+        class="mt-4 max-w-md text-balance text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400"
+      >
+        Surgical navigation, built for the operating room.
+      </p>
+
+      <!-- Status pill. The whole point of the page: visible confirmation that the
+           host served HTML *and* the compiled stylesheet. -->
+      <p
+        class="mt-9 inline-flex items-center gap-2.5 rounded-full border border-brand-200 bg-brand-50/70 px-4 py-1.5 text-sm font-medium text-brand-600 dark:border-brand-900 dark:bg-brand-900/30 dark:text-brand-200"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="animate-beacon absolute inset-0 rounded-full bg-brand-500"></span>
+        </span>
+        Hosting proof of concept
+      </p>
+
+      <p class="mt-6 max-w-sm text-sm leading-relaxed text-slate-500 dark:text-slate-500">
+        If this page is styled, the host is serving static assets correctly.
+      </p>
+    </main>
+
+    <!--
+      Build stamp. Replace these values at deploy time so it is always obvious
+      which deployment you are looking at. The data-* attributes mark the
+      substitution points for whatever your pipeline uses (envsubst, sed, a CI
+      template step, and so on).
+    -->
+    <footer
+      class="border-t border-slate-200/80 px-6 py-5 text-center dark:border-slate-800/80"
+    >
+      <dl
+        class="mx-auto flex max-w-lg flex-col items-center justify-center gap-x-8 gap-y-2 font-mono text-xs text-slate-500 sm:flex-row dark:text-slate-500"
+      >
+        <div class="flex items-center gap-1.5">
+          <dt class="text-slate-400 dark:text-slate-600">env</dt>
+          <dd data-build="environment">local</dd>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <dt class="text-slate-400 dark:text-slate-600">commit</dt>
+          <dd data-build="commit">0000000</dd>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <dt class="text-slate-400 dark:text-slate-600">built</dt>
+          <dd data-build="timestamp">not set</dd>
+        </div>
+      </dl>
+    </footer>
+
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var toggle = document.getElementById("theme-toggle");
+        var STORAGE_KEY = "navigosurg-theme";
+
+        function describe() {
+          var isDark = root.classList.contains("dark");
+          toggle.setAttribute("aria-pressed", String(isDark));
+          toggle.setAttribute(
+            "aria-label",
+            isDark ? "Switch to light mode" : "Switch to dark mode"
+          );
+        }
+
+        // The head script may already have dropped `dark`; resync the label.
+        describe();
+
+        toggle.addEventListener("click", function () {
+          var isDark = root.classList.toggle("dark");
+          try {
+            localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
+          } catch (e) {
+            /* Choice simply will not persist. */
+          }
+          describe();
+        });
+      })();
+    </script>
+  </body>
+</html>
