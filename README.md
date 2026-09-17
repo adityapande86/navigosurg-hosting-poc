@@ -89,6 +89,28 @@ Interactive controls carry their own state: the theme toggle is a
 `role="switch"` with `aria-checked`, and the mobile menu button syncs
 `aria-expanded`.
 
+The skip link is the first focusable element and targets `<main id="content">`,
+which carries `tabindex="-1"` so focus actually moves rather than only the
+scroll position. It uses the `skip-link` utility rather than
+`sr-only`/`focus:not-sr-only` — `not-sr-only` resets `position`, so it fights
+whatever positioning utility you pair it with depending on emit order. Instead
+it is parked off-screen with a transform and slides in on `:focus`, which keeps
+it in the tab order and the accessibility tree at all times.
+
+## A note on cascade layers
+
+Two rules must stay **unlayered** (outside `@utility`) to work, and both say so
+in a comment. `@utility` output lands in Tailwind's `utilities` layer alongside
+core utilities like `border` and `max-w-*`, so a declaration that needs to beat
+one of those loses if you move it inside:
+
+- `.card-rule, .card-rule-muted, .card-rule-faint { border-top-width: 0 }` —
+  the gradient bar replaces the card's top hairline; inside `@utility` it loses
+  to `border` and every card gains a stray 1px top border.
+- `.max-w-6xl { max-width: 80rem }` — widens Tailwind's own 72rem value.
+
+If you tidy this file, re-check those two before assuming they are redundant.
+
 ## Note on installing
 
 `registry.npmjs.org` is unreachable from some networks here (TLS connection
