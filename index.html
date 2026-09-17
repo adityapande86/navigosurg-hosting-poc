@@ -1,185 +1,625 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--
-  `dark` ships in the markup so dark is the default even with JavaScript
-  disabled. The head script below only ever *removes* it.
+  ═══════════════════════════════════════════════════════════════
+  NavigoSurg Private Limited — marketing site (single document)
+  ═══════════════════════════════════════════════════════════════
+  SECTION → FUTURE ROUTE MAP
+
+    #home      → /            Hero, marquee, clinical problem
+    #platform  → /platform    V1 scope, honest limits, approach,
+                              specified pipeline, validation, roadmap
+    #about     → /about       Company, founders, intended users
+    #contact   → /contact     Enquiry form + direct contact details
+
+  Each anchor section below is self-contained and carries its own
+  <header> block, so a section can be lifted into its own route
+  without restructuring. Nav links are hash-based today; swap the
+  href values to path values when routes exist.
+
+  BUILD
+    npm run build          (Tailwind CLI: src/input.css → styles.css)
+
+  DEPLOY STAMP
+    No visible build stamp ships on this page. To identify a
+    deployment, substitute into the placeholders below at deploy time.
+      env:    __ENVIRONMENT__
+      commit: __COMMIT__
+      built:  __BUILD_TIME__
+  ═══════════════════════════════════════════════════════════════
 -->
-<html lang="en" class="dark h-full">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NavigoSurg — Hosting Proof of Concept</title>
-    <meta
-      name="description"
-      content="Deployment placeholder for NavigoSurg. If you can read this, the host is serving static assets correctly."
-    />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="theme-color" content="#020618" />
-    <link rel="icon" href="data:," />
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%2322d3ee' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M32 58V44' stroke-width='9.5'/%3E%3Cpath d='M32 44 18 30V9' stroke-width='8'/%3E%3Cpath d='M32 44 46 30V9' stroke-width='8'/%3E%3C/g%3E%3Cpath d='M6 26 58 17' stroke='%230a0d12' stroke-width='11' stroke-linecap='round' fill='none'/%3E%3Cpath d='M6 26 58 17' stroke='%23a78bfa' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<title>NavigoSurg — Surgical visualisation and navigation software, in development</title>
+<meta name="description" content="NavigoSurg is building surgical visualisation and navigation software. The first module turns a standard triphasic CT into an interactive three-dimensional map of the liver. V1 in active development; investigational, not available for clinical use or sale.">
+<!-- 1. ANTI-FLASH: must run before the stylesheet link and first paint.
+     A stored choice wins; otherwise the OS preference decides. -->
+<script>
+  try {
+    var t = localStorage.getItem('theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (t === 'dark') document.documentElement.classList.add('dark');
+  } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-bg text-text">
 
-    <!--
-      Runs before first paint so a returning light-mode visitor never sees a
-      flash of dark. Deliberately inline and blocking: an external file could
-      paint before it loads.
-    -->
-    <script>
-      (function () {
-        try {
-          if (localStorage.getItem("navigosurg-theme") === "light") {
-            document.documentElement.classList.remove("dark");
-          }
-        } catch (e) {
-          /* Private mode or blocked storage: keep the dark default. */
-        }
-      })();
-    </script>
+<a href="#home" class="sr-only">Skip to content</a>
 
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+<!-- ══ NAV ══════════════════════════════════════════════════ -->
+<header class="sticky top-0 z-50">
+  <nav class="bg-bg border-b border-border">
+    <div class="mx-auto max-w-6xl px-5 md:px-8 flex items-center justify-between gap-6 h-16">
+      <a href="#home" class="logo">
+        <svg width="0" height="0" aria-hidden="true" class="absolute"><defs><linearGradient id="ng-grad" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--accent)"></stop><stop offset="100%" stop-color="var(--accent-2)"></stop>
+        </linearGradient></defs></svg>
+        <span class="logo-tile">
+          <svg class="logo-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <g stroke="url(#ng-grad)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M32 58V44" stroke-width="9.5"></path>
+              <path d="M32 44 18 30V9" stroke-width="8"></path>
+              <path d="M32 44 46 30V9" stroke-width="8"></path>
+            </g>
+            <path d="M6 26 58 17" stroke="var(--surface-raised)" stroke-width="11" stroke-linecap="round" fill="none"></path>
+            <path d="M6 26 58 17" stroke="var(--accent-2)" stroke-width="6" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="logo-word">Navigo<span class="text-accent">Surg</span></span>
+      </a>
 
-  <body
-    class="flex h-full min-h-svh flex-col bg-white font-sans text-ink antialiased dark:bg-slate-950 dark:text-slate-100"
-  >
-    <div class="flex justify-end px-4 pt-4 sm:px-6 sm:pt-6">
-      <button
-        id="theme-toggle"
-        type="button"
-        class="rounded-full border border-slate-200 p-2.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500 dark:border-slate-800 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200"
-        aria-label="Switch to light mode"
-        aria-pressed="true"
-      >
-        <!-- Sun: shown in dark mode, because clicking takes you to light. -->
-        <svg
-          class="hidden h-5 w-5 dark:block"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="4.5" />
-          <path
-            d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M5 5l1.8 1.8M17.2 17.2 19 19M19 5l-1.8 1.8M6.8 17.2 5 19"
-          />
-        </svg>
-        <!-- Moon: shown in light mode. -->
-        <svg
-          class="h-5 w-5 dark:hidden"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M21 13.5A9 9 0 1 1 10.5 3a7 7 0 0 0 10.5 10.5z" />
-        </svg>
-      </button>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#about" class="nav-link" data-nav="about">About</a>
+        <a href="#platform" class="nav-link" data-nav="platform">Platform</a>
+        <a href="#contact" class="nav-link" data-nav="contact">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Dark mode" class="theme-switch">
+          <span class="hidden lg:block text-xs font-semibold tracking-widest uppercase text-muted">Dark</span>
+          <span class="theme-switch-track">
+            <span class="theme-switch-knob">
+              <svg class="icon-sun" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.4"></circle>
+                <path d="M12 1.8v2.8M12 19.4v2.8M1.8 12h2.8M19.4 12h2.8M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"></path>
+              </svg>
+              <svg class="icon-moon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
+
+        <a href="#contact" class="hidden sm:inline-flex items-center bg-accent text-bg text-sm font-medium px-4 h-9 rounded-md hover:opacity-90">Get in touch</a>
+
+        <button id="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-nav"
+          class="md:hidden flex items-center justify-center w-9 h-9 rounded-md border border-border bg-surface-raised text-muted">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M3.5 7h17M3.5 12h17M3.5 17h17"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <main class="flex flex-1 flex-col items-center justify-center px-6 pb-12 text-center">
-      <!-- Logo mark: a compass rose crossed with a targeting reticle. Inline SVG so
-           the page has no external image assets for the host to resolve. -->
-      <svg
-        class="h-16 w-16 text-brand-500 sm:h-20 sm:w-20 dark:text-brand-400"
-        viewBox="0 0 48 48"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        role="img"
-        aria-label="NavigoSurg logo"
-      >
-        <circle cx="24" cy="24" r="19" class="opacity-30" />
-        <circle cx="24" cy="24" r="12.5" />
-        <path d="M24 2v7M24 39v7M2 24h7M39 24h7" class="opacity-60" />
-        <path d="M30.5 17.5 26 26l-8.5 4.5L22 22z" fill="currentColor" stroke="none" />
-      </svg>
+    <div id="mobile-nav" class="hidden md:hidden border-t border-border bg-surface">
+      <div class="mx-auto max-w-6xl px-5 py-4 flex flex-col gap-4 text-sm font-medium">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#platform" class="nav-link">Platform</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#contact" class="text-accent">Get in touch →</a>
+      </div>
+    </div>
+  </nav>
 
-      <h1 class="mt-7 text-4xl font-semibold tracking-tight sm:text-5xl">
-        Navigo<span class="text-brand-500 dark:text-brand-400">Surg</span>
-      </h1>
+  <!-- ══ STATUS BAND ════════════════════════════════════════ -->
+  <div class="bg-surface border-b border-border">
+    <p class="mx-auto max-w-6xl px-5 md:px-8 py-2.5 text-xs leading-relaxed text-muted">
+      <span class="dot pulse-dot"></span>
+      <span class="text-accent font-semibold tracking-wider">PRE-PRODUCTION</span>
+      <span class="px-2 text-border">/</span>
+      NavigoSurg V1 is in active development. Software described on this site is investigational, is not CE-marked or CDSCO-registered, and is not available for clinical use or sale.
+    </p>
+  </div>
+</header>
 
-      <p
-        class="mt-4 max-w-md text-balance text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-400"
-      >
-        Surgical navigation, built for the operating room.
-      </p>
+<main>
 
-      <!-- Status pill. The whole point of the page: visible confirmation that the
-           host served HTML *and* the compiled stylesheet. -->
-      <p
-        class="mt-9 inline-flex items-center gap-2.5 rounded-full border border-brand-200 bg-brand-50/70 px-4 py-1.5 text-sm font-medium text-brand-600 dark:border-brand-900 dark:bg-brand-900/30 dark:text-brand-200"
-      >
-        <span class="relative flex h-2 w-2">
-          <span class="animate-beacon absolute inset-0 rounded-full bg-brand-500"></span>
+<!-- ══ HERO ═════════════════════════════════════════════════ -->
+<section id="home" class="bg-bg border-b border-border overflow-hidden mesh-aura">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-14 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-7">
+      <div class="flex items-center gap-4">
+        <span class="logo-tile-lg">
+          <svg class="logo-mark-lg" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <g stroke="url(#ng-grad)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M32 58V44" stroke-width="8.5"></path>
+              <path d="M32 44 18 30V9" stroke-width="7"></path>
+              <path d="M32 44 46 30V9" stroke-width="7"></path>
+            </g>
+            <path d="M6 26 58 17" stroke="var(--surface-raised)" stroke-width="10.5" stroke-linecap="round" fill="none"></path>
+            <path d="M6 26 58 17" stroke="var(--accent-2)" stroke-width="5.5" stroke-linecap="round" fill="none"></path>
+          </svg>
         </span>
-        Hosting proof of concept
+        <div>
+          <p class="masthead-word">Navigo<span class="text-accent">Surg</span></p>
+          <p class="mt-1.5 text-xs font-semibold tracking-widest uppercase text-muted">Surgical visualisation &amp; navigation</p>
+        </div>
+      </div>
+      <p class="eyebrow mt-10">Pre-production · V1 in development</p>
+      <h1 class="display-1 mt-6 text-balance">Surgical visualisation and navigation, designed by physicians.</h1>
+      <p class="mt-8 max-w-2xl text-lg text-text leading-relaxed text-pretty">
+        NavigoSurg is a platform for planning and navigating surgery from a patient's own imaging. Hepatic planning is the first module, not the whole of it.
       </p>
-
-      <p class="mt-6 max-w-sm text-sm leading-relaxed text-slate-500 dark:text-slate-500">
-        If this page is styled, the host is serving static assets correctly.
+      <p class="mt-5 max-w-2xl text-lg text-muted leading-relaxed text-pretty">
+        The module in development, HPS-1, is software that turns a standard triphasic CT into an interactive three-dimensional map of the liver — segmental anatomy, venous architecture, and remnant volume — for surgeons planning living donor transplantation and complex resection.
       </p>
-    </main>
+      <div class="mt-10 flex flex-wrap items-center gap-3">
+        <a href="#contact" class="inline-flex items-center bg-accent text-bg text-sm font-medium px-5 h-11 rounded-md hover:opacity-90">Get in touch</a>
+        <a href="#platform" class="inline-flex items-center border border-border bg-surface-raised text-text text-sm font-medium px-5 h-11 rounded-md hover:border-accent elev">What we're building →</a>
+      </div>
+    </div>
 
-    <!--
-      Build stamp. Replace these values at deploy time so it is always obvious
-      which deployment you are looking at. The data-* attributes mark the
-      substitution points for whatever your pipeline uses (envsubst, sed, a CI
-      template step, and so on).
-    -->
-    <footer
-      class="border-t border-slate-200/80 px-6 py-5 text-center dark:border-slate-800/80"
-    >
-      <dl
-        class="mx-auto flex max-w-lg flex-col items-center justify-center gap-x-8 gap-y-2 font-mono text-xs text-slate-500 sm:flex-row dark:text-slate-500"
-      >
-        <div class="flex items-center gap-1.5">
-          <dt class="text-slate-400 dark:text-slate-600">env</dt>
-          <dd data-build="environment">local</dd>
+    <div class="lg:col-span-5 bg-surface-raised border border-border rounded-lg p-6 md:p-8 elev text-accent" aria-hidden="true">
+      <!-- Decorative: abstract branching vessel tree. Strokes use
+           currentColor so the drawing works in both themes. -->
+      <svg class="vessel w-full h-auto" viewBox="0 0 600 430" fill="none" stroke="currentColor"
+           stroke-linecap="round" stroke-linejoin="round">
+        <g stroke-width="1" opacity="0.22">
+          <circle cx="300" cy="300" r="120"></circle>
+          <circle cx="300" cy="300" r="190"></circle>
+          <circle cx="300" cy="300" r="260"></circle>
+          <line x1="40" y1="426" x2="560" y2="426" stroke-dasharray="2 8"></line>
+        </g>
+        <g class="t1" stroke-width="7" opacity="0.95">
+          <path pathLength="1" d="M300 426 C300 384 298 360 294 330"></path>
+        </g>
+        <g class="t2" stroke-width="4.6" opacity="0.9">
+          <path pathLength="1" d="M294 330 C276 302 248 289 214 275"></path>
+          <path pathLength="1" d="M294 330 C316 303 344 290 378 277"></path>
+          <path pathLength="1" d="M294 330 C296 296 298 272 300 238"></path>
+        </g>
+        <g class="t3" stroke-width="2.9" opacity="0.8">
+          <path pathLength="1" d="M214 275 C188 259 172 233 160 205"></path>
+          <path pathLength="1" d="M214 275 C190 273 166 269 140 259"></path>
+          <path pathLength="1" d="M214 275 C206 249 202 231 196 207"></path>
+          <path pathLength="1" d="M378 277 C404 259 418 233 428 205"></path>
+          <path pathLength="1" d="M378 277 C402 275 428 273 452 265"></path>
+          <path pathLength="1" d="M378 277 C386 251 390 233 396 209"></path>
+          <path pathLength="1" d="M300 238 C284 216 276 198 268 174"></path>
+          <path pathLength="1" d="M300 238 C316 216 324 198 332 174"></path>
+          <path pathLength="1" d="M300 238 C300 212 300 194 300 166"></path>
+        </g>
+        <g class="t4" stroke-width="1.7" opacity="0.9">
+          <path pathLength="1" d="M160 205 C152 191 144 181 134 171"></path>
+          <path pathLength="1" d="M160 205 C164 187 168 177 172 163"></path>
+          <path pathLength="1" d="M196 207 C190 191 188 181 184 165"></path>
+          <path pathLength="1" d="M196 207 C202 193 208 183 214 171"></path>
+          <path pathLength="1" d="M140 259 C128 254 120 250 110 244"></path>
+          <path pathLength="1" d="M428 205 C436 189 442 179 452 169"></path>
+          <path pathLength="1" d="M428 205 C424 189 420 179 416 163"></path>
+          <path pathLength="1" d="M396 209 C400 193 404 181 410 169"></path>
+          <path pathLength="1" d="M396 209 C390 193 386 183 382 169"></path>
+          <path pathLength="1" d="M452 265 C464 260 472 256 482 250"></path>
+          <path pathLength="1" d="M268 174 C260 160 254 152 246 142"></path>
+          <path pathLength="1" d="M268 174 C272 158 274 150 278 138"></path>
+          <path pathLength="1" d="M332 174 C340 160 346 150 354 140"></path>
+          <path pathLength="1" d="M332 174 C328 158 326 150 322 138"></path>
+          <path pathLength="1" d="M300 166 C294 150 292 142 288 130"></path>
+          <path pathLength="1" d="M300 166 C306 150 308 142 312 130"></path>
+        </g>
+      </svg>
+      <p class="mt-4 pt-4 border-t border-border text-center text-xs tracking-widest uppercase text-muted">Illustrative diagram — not product output</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ══════════════════════════════════════════════ -->
+<div class="bg-surface border-b border-border overflow-hidden py-4 fade-x" aria-hidden="true">
+  <div class="marquee-track flex w-max opacity-70">
+    <span class="flex shrink-0 text-xs tracking-widest uppercase text-muted whitespace-nowrap">
+      <span class="px-6 border-l border-border">Hepatobiliary Surgery</span><span class="px-6 border-l border-border">LDLT Planning</span><span class="px-6 border-l border-border">Couinaud Anatomy</span><span class="px-6 border-l border-border">Portal Venous Mapping</span><span class="px-6 border-l border-border">FLR Volumetry</span><span class="px-6 border-l border-border">Virtual Resection</span><span class="px-6 border-l border-border">Triphasic CT</span><span class="px-6 border-l border-border">DICOM</span>
+    </span>
+    <span class="flex shrink-0 text-xs tracking-widest uppercase text-muted whitespace-nowrap">
+      <span class="px-6 border-l border-border">Hepatobiliary Surgery</span><span class="px-6 border-l border-border">LDLT Planning</span><span class="px-6 border-l border-border">Couinaud Anatomy</span><span class="px-6 border-l border-border">Portal Venous Mapping</span><span class="px-6 border-l border-border">FLR Volumetry</span><span class="px-6 border-l border-border">Virtual Resection</span><span class="px-6 border-l border-border">Triphasic CT</span><span class="px-6 border-l border-border">DICOM</span>
+    </span>
+  </div>
+</div>
+
+<!-- ══ THE PROBLEM ══════════════════════════════════════════ -->
+<section class="bg-bg border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-4 reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">The clinical problem</p></div>
+      <h2 class="display-2 mt-5 text-balance">Hepatic vascular anatomy is variant, and the planning tools aren't.</h2>
+    </div>
+    <div class="lg:col-span-7 lg:col-start-6 reveal">
+      <p class="text-lg text-muted leading-relaxed text-pretty">
+        Preoperative planning for liver surgery still depends largely on reconstructing three-dimensional vascular anatomy mentally, from axial slices. Variant anatomy is common rather than exceptional. In living donor transplantation — which accounts for the majority of liver transplants performed in India — the tolerance for a misjudged division plane is small. Existing three-dimensional planning systems address this, but most are tied to a specific vendor's hardware or to a workstation inside the radiology department, which is not where the surgical decision gets made.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHAT WE'RE BUILDING ══════════════════════════════════ -->
+<section id="platform" class="bg-surface border-b border-border beam mesh-aura">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+    <div class="max-w-3xl reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">V1 scope</p></div>
+      <h2 class="display-2 mt-5 text-balance">What V1 is designed to do</h2>
+      <p class="mt-6 text-lg text-muted leading-relaxed text-pretty">
+        V1 is a pilot-grade build with a deliberately narrow scope. What follows is the specification we are building to, not a description of shipped software.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-2 gap-5">
+      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
+        <h3 class="display-3 mt-4">Segmental and venous segmentation</h3>
+        <p class="mt-3 text-muted leading-relaxed">Automated segmentation of liver parenchyma, the Couinaud segments, and the portal and hepatic venous trees from a standard triphasic CT.</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
+        <h3 class="display-3 mt-4">Volumetry</h3>
+        <p class="mt-3 text-muted leading-relaxed">Total, lobar and segmental volumes, and future liver remnant volume computed from a planned division plane rather than estimated from a formula.</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
+        <h3 class="display-3 mt-4">Virtual resection</h3>
+        <p class="mt-3 text-muted leading-relaxed">Define a resection plane on the three-dimensional model and see the resulting remnant and specimen.</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
+        <h3 class="display-3 mt-4">Vessel measurement at the cut plane</h3>
+        <p class="mt-3 text-muted leading-relaxed">Branch diameter and cross-sectional area at the division surface — the measurements that inform anastomosis planning.</p>
+      </article>
+    </div>
+
+    <!-- Screenshot placeholder — no fabricated interface -->
+    <div class="reveal mt-5 stripes border border-border rounded-lg h-56 md:h-72 flex items-center justify-center">
+      <p class="px-5 text-center text-xs tracking-widest uppercase text-muted">Product screenshot — V1 in development</p>
+    </div>
+
+    <div class="reveal mt-12 border border-border bg-accent-soft rounded-lg p-7 md:p-9 max-w-3xl">
+      <p class="text-xs font-semibold tracking-widest uppercase text-text">Known limits of V1</p>
+      <p class="mt-4 text-muted leading-relaxed text-pretty">
+        Arterial tree reconstruction is staged behind a confidence threshold and will not display for every case. Biliary anatomy is limited to the extrahepatic duct. Several outputs are heuristic estimates and are labelled as such in the interface. Every output is intended for review against the source CT, not in place of it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ APPROACH ═════════════════════════════════════════════ -->
+<section class="bg-bg border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+    <div class="max-w-3xl reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Approach</p></div>
+      <h2 class="display-2 mt-5 text-balance">Three decisions that shape the product</h2>
+    </div>
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+      <div class="reveal card-rule pt-8">
+        <h3 class="display-3">Measurement at the division plane</h3>
+        <p class="mt-3 text-muted leading-relaxed">Parenchymal and segmental segmentation is increasingly available, including from open-source tooling. Our focus is the layer above it: what the vessels are doing where the surgeon intends to cut.</p>
+      </div>
+      <div class="reveal card-rule-muted pt-8">
+        <h3 class="display-3">Cross-platform by design</h3>
+        <p class="mt-3 text-muted leading-relaxed">Built as web software so it opens on a tablet at the bedside or a laptop at a referring centre, rather than on one workstation in one department.</p>
+      </div>
+      <div class="reveal card-rule-faint pt-8">
+        <h3 class="display-3">Clinical logic owned in-house</h3>
+        <p class="mt-3 text-muted leading-relaxed">Segmentation is engineering. Deciding which measurements matter, how variant anatomy is classified, and what the interface should refuse to assert is clinical work, and it sits with the founders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WILL WORK ═════════════════════════════════════ -->
+<section class="bg-surface border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-4 reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Specified pipeline</p></div>
+      <h2 class="display-2 mt-5 text-balance">How it will work</h2>
+    </div>
+    <ol class="lg:col-span-7 lg:col-start-6 flex flex-col">
+      <li class="reveal flex gap-6 border-t border-border py-7">
+        <span class="num text-accent shrink-0 w-7 pt-1">01</span>
+        <div>
+          <h3 class="display-3">DICOM ingest</h3>
+          <p class="mt-2 text-muted leading-relaxed">Standard triphasic CT, no special acquisition protocol.</p>
         </div>
-        <div class="flex items-center gap-1.5">
-          <dt class="text-slate-400 dark:text-slate-600">commit</dt>
-          <dd data-build="commit">0000000</dd>
+      </li>
+      <li class="reveal flex gap-6 border-t border-border py-7">
+        <span class="num text-accent-2 shrink-0 w-7 pt-1">02</span>
+        <div>
+          <h3 class="display-3">Segmentation</h3>
+          <p class="mt-2 text-muted leading-relaxed">Parenchyma, Couinaud segments, portal and hepatic venous trees.</p>
         </div>
-        <div class="flex items-center gap-1.5">
-          <dt class="text-slate-400 dark:text-slate-600">built</dt>
-          <dd data-build="timestamp">not set</dd>
+      </li>
+      <li class="reveal flex gap-6 border-t border-border py-7">
+        <span class="num text-accent-3 shrink-0 w-7 pt-1">03</span>
+        <div>
+          <h3 class="display-3">Reconstruction</h3>
+          <p class="mt-2 text-muted leading-relaxed">Interactive three-dimensional model with cross-reference back to the source slices.</p>
         </div>
-      </dl>
-    </footer>
+      </li>
+      <li class="reveal flex gap-6 border-t border-border py-7">
+        <span class="num text-accent shrink-0 w-7 pt-1">04</span>
+        <div>
+          <h3 class="display-3">Planning</h3>
+          <p class="mt-2 text-muted leading-relaxed">Virtual resection plane, remnant volumetry, vessel measurement at the cut surface.</p>
+        </div>
+      </li>
+      <li class="reveal flex gap-6 border-t border-b border-border py-7">
+        <span class="num text-accent-2 shrink-0 w-7 pt-1">05</span>
+        <div>
+          <h3 class="display-3">Review</h3>
+          <p class="mt-2 text-muted leading-relaxed">Outputs presented alongside the source CT, with heuristic values flagged as estimates.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
 
-    <script>
-      (function () {
-        var root = document.documentElement;
-        var toggle = document.getElementById("theme-toggle");
-        var STORAGE_KEY = "navigosurg-theme";
+<!-- ══ VALIDATION ═══════════════════════════════════════════ -->
+<section class="bg-ink border-b border-border beam mesh-aura on-ink">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <div class="lg:col-span-4 reveal">
+      <div class="eyebrow-row on-ink"><span class="dot"></span><p class="eyebrow">Validation</p></div>
+      <h2 class="display-2 mt-5 text-balance text-on-ink">How we intend to demonstrate that it works</h2>
+    </div>
+    <div class="lg:col-span-7 lg:col-start-6 reveal">
+      <p class="text-lg text-on-ink-muted leading-relaxed text-pretty">
+        Accuracy claims should rest on measurement, so we are not making any yet. Planned standalone performance evaluation covers Dice similarity for parenchymal and segmental segmentation against a radiologist-established reference standard; per-branch detection sensitivity and false-branch rate for the venous trees; and absolute and percentage volumetric error against manual volumetry. A portion of the evaluation dataset is held back from anyone involved in development, and performance will be reported stratified by scanner, slice thickness and contrast timing. Results will be published here when they exist.
+      </p>
+    </div>
+  </div>
+</section>
 
-        function describe() {
-          var isDark = root.classList.contains("dark");
-          toggle.setAttribute("aria-pressed", String(isDark));
-          toggle.setAttribute(
-            "aria-label",
-            isDark ? "Switch to light mode" : "Switch to dark mode"
-          );
-        }
+<!-- ══ ROADMAP ══════════════════════════════════════════════ -->
+<section class="bg-surface border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+    <div class="max-w-3xl reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Roadmap</p></div>
+      <h2 class="display-2 mt-5 text-balance">The first module of a larger platform</h2>
+      <p class="mt-6 text-lg text-muted leading-relaxed text-pretty">
+        Hepatic planning is where we start, not where we stop. NavigoSurg is designed as a surgical visualisation and navigation platform that extends into further specialties and, in time, into the operating theatre itself.
+      </p>
+    </div>
 
-        // The head script may already have dropped `dark`; resync the label.
-        describe();
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
+      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 md:p-8 elev flex flex-col">
+        <p class="text-xs font-semibold tracking-widest uppercase text-accent">In development</p>
+        <p class="mt-2 text-xs tracking-wide text-muted">Funded, under active build</p>
+        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-text text-pretty">HPS-1 — pre-operative planning for liver resection and living donor transplantation. Segmentation, volumetry, virtual resection and vessel measurement at the division plane.</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border card-rule-muted rounded-lg p-7 md:p-8 elev flex flex-col">
+        <p class="text-xs font-semibold tracking-widest uppercase text-accent-2">Planned</p>
+        <p class="mt-2 text-xs tracking-wide text-muted">Specified, not yet funded</p>
+        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-muted text-pretty">Arterial tree reconstruction with variant classification. Additional surgical specialties, beginning where anatomy is most variable. Patient-specific anatomical models and surgical guides, produced from the same segmentation that drives the planning software — printing through established manufacturing partners rather than in-house.</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border card-rule-faint rounded-lg p-7 md:p-8 elev flex flex-col">
+        <p class="text-xs font-semibold tracking-widest uppercase text-accent-3">Long term</p>
+        <p class="mt-2 text-xs tracking-wide text-muted">Direction, not commitment</p>
+        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-muted text-pretty">Extended-reality surgical rehearsal, and intraoperative visualisation that carries the pre-operative plan to the table. This is a multi-year engineering programme and we describe it as a direction rather than a roadmap item.</p>
+      </article>
+    </div>
+    <p class="reveal mt-6 max-w-2xl text-sm text-muted leading-relaxed">Only the first tier is funded and under active development. Everything below it is stated as intent.</p>
+  </div>
+</section>
 
-        toggle.addEventListener("click", function () {
-          var isDark = root.classList.toggle("dark");
-          try {
-            localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-          } catch (e) {
-            /* Choice simply will not persist. */
-          }
-          describe();
-        });
-      })();
-    </script>
-  </body>
+<!-- ══ ABOUT ════════════════════════════════════════════════ -->
+<section id="about" class="bg-bg border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-4 reveal">
+        <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">The team</p></div>
+        <h2 class="display-2 mt-5 text-balance">Our Team</h2>
+      </div>
+      <div class="lg:col-span-7 lg:col-start-6 reveal">
+        <p class="text-lg text-muted leading-relaxed text-pretty">
+          NavigoSurg is a clinician-led company. Our founders are three practising doctors — two radiologists and a medical oncologist — who work daily with the scans, the surgeons and the decisions this software is built to support. That perspective shapes what we build and how carefully we make claims about it.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
+      <article class="reveal founder">
+        <div class="founder-photo"><span class="founder-mono">SP</span></div>
+        <div class="mt-5 flex flex-col">
+          <p class="founder-name">Dr Siddharth Pande</p>
+          <p class="founder-post">MBBS, MD (Radiology), Fellowship in Musculoskeletal Imaging</p>
+          <p class="founder-role">Co-founder · Director</p>
+        </div>
+      </article>
+      <article class="reveal founder">
+        <div class="founder-photo"><span class="founder-mono">AM</span></div>
+        <div class="mt-5 flex flex-col">
+          <p class="founder-name">Dr Aditya Mohata</p>
+          <p class="founder-post">MBBS, MD (Radiology), FCTI, European CMR Level 3</p>
+          <p class="founder-role">Co-founder · Director</p>
+        </div>
+      </article>
+      <article class="reveal founder">
+        <div class="founder-photo"><span class="founder-mono">MI</span></div>
+        <div class="mt-5 flex flex-col">
+          <p class="founder-name">Dr Madhavi Indani</p>
+          <p class="founder-post">MBBS, MD, DM (Medical Oncology)</p>
+          <p class="founder-role">Co-founder · Director</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHO IT'S FOR ═════════════════════════════════════════ -->
+<section class="bg-surface border-b border-border">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
+    <div class="eyebrow-row reveal"><span class="dot"></span><p class="eyebrow">Intended users</p></div>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="reveal card-rule border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
+        <p class="display-3">Hepatobiliary and transplant surgeons</p>
+      </div>
+      <div class="reveal card-rule-muted border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
+        <p class="display-3">Liver transplant programmes</p>
+      </div>
+      <div class="reveal card-rule-faint border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
+        <p class="display-3">Radiologists in preoperative evaluation</p>
+      </div>
+      <div class="reveal card-rule border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
+        <p class="display-3">Surgical training and fellowship programmes</p>
+      </div>
+    </div>
+    <p class="reveal mt-10 text-sm text-muted">We are currently seeking pilot collaborators rather than customers.</p>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══════════════════════════════════════════════ -->
+<section id="contact" class="bg-bg border-b border-border beam mesh-aura">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="lg:col-span-5 reveal">
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Get in touch</p></div>
+      <h2 class="display-2 mt-5 text-balance">We're looking for pilot sites and clinical collaborators</h2>
+      <p class="mt-6 text-muted leading-relaxed text-pretty">
+        If you run a transplant or hepatobiliary programme, or you'd like to follow the development, get in touch. We are not selling anything yet.
+      </p>
+      <div class="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-sm">
+        <a href="mailto:info.navigosurg@gmail.com" class="text-accent">info.navigosurg@gmail.com</a>
+        <a href="tel:+919822272553" class="text-accent">+91 98222 72553</a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 lg:col-start-7 reveal">
+      <form method="POST" action="/api/contact" class="bg-surface-raised border border-border rounded-lg p-7 md:p-9 elev flex flex-col gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="flex flex-col gap-2">
+            <label for="name" class="text-xs font-semibold tracking-widest uppercase text-muted">Name</label>
+            <input id="name" name="name" type="text" required autocomplete="name"
+              class="w-full bg-surface border border-border rounded-md px-3 h-11 text-text">
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="email" class="text-xs font-semibold tracking-widest uppercase text-muted">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email"
+              class="w-full bg-surface border border-border rounded-md px-3 h-11 text-text">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="flex flex-col gap-2">
+            <label for="organisation" class="text-xs font-semibold tracking-widest uppercase text-muted">Organisation</label>
+            <input id="organisation" name="organisation" type="text" autocomplete="organization"
+              class="w-full bg-surface border border-border rounded-md px-3 h-11 text-text">
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="role" class="text-xs font-semibold tracking-widest uppercase text-muted">I am a…</label>
+            <select id="role" name="role" class="w-full bg-surface border border-border rounded-md px-3 h-11 text-text">
+              <option value="surgeon">Surgeon</option>
+              <option value="radiologist">Radiologist</option>
+              <option value="hospital-administration">Hospital administration</option>
+              <option value="investor">Investor</option>
+              <option value="press">Press</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="message" class="text-xs font-semibold tracking-widest uppercase text-muted">Message</label>
+          <textarea id="message" name="message" rows="5" required
+            class="w-full bg-surface border border-border rounded-md px-3 py-3 text-text leading-relaxed"></textarea>
+        </div>
+        <button type="submit" class="inline-flex items-center justify-center bg-accent text-bg text-sm font-medium px-6 h-11 rounded-md hover:opacity-90 w-full sm:w-auto">Send</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+<footer class="bg-surface beam">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-16 grid grid-cols-1 md:grid-cols-12 gap-10">
+    <div class="md:col-span-5">
+      <span class="logo">
+        <span class="logo-tile">
+          <svg class="logo-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <g stroke="url(#ng-grad)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M32 58V44" stroke-width="9.5"></path>
+              <path d="M32 44 18 30V9" stroke-width="8"></path>
+              <path d="M32 44 46 30V9" stroke-width="8"></path>
+            </g>
+            <path d="M6 26 58 17" stroke="var(--surface-raised)" stroke-width="11" stroke-linecap="round" fill="none"></path>
+            <path d="M6 26 58 17" stroke="var(--accent-2)" stroke-width="6" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="logo-word">Navigo<span class="text-accent">Surg</span></span>
+      </span>
+      <p class="mt-3 text-sm text-muted leading-relaxed">Surgical visualisation and navigation software. In development.</p>
+    </div>
+    <nav class="md:col-span-3">
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted">Navigation</p>
+      <div class="mt-4 flex flex-col gap-2 text-sm">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#platform" class="nav-link">Platform</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </nav>
+    <div class="md:col-span-4">
+      <p class="text-xs font-semibold tracking-widest uppercase text-muted">Company</p>
+      <div class="mt-4 flex flex-col gap-2 text-sm text-muted leading-relaxed">
+        <p class="text-text">NavigoSurg Private Limited</p>
+        <p>CIN: U32509ME2026PTC475792</p>
+        <p>Registered office: C/o Pande Memorial Hospital, P. R. Sathe Marg, Dhantoli, Nagpur, Maharashtra 440012, India</p>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-border">
+    <p class="mx-auto max-w-6xl px-5 md:px-8 py-6 text-xs text-muted leading-relaxed">
+      © 2026 NavigoSurg Private Limited. Software described on this site is investigational and not available for clinical use or sale.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // 2. THEME TOGGLE
+  var root = document.documentElement, tBtn = document.getElementById('theme-toggle');
+  function syncBtn() {
+    var d = root.classList.contains('dark');
+    tBtn.setAttribute('aria-checked', String(d));
+  }
+  syncBtn();
+  tBtn.addEventListener('click', function () {
+    root.classList.toggle('dark');
+    try { localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch (e) {}
+    syncBtn();
+  });
+
+  // 3. MOBILE NAV TOGGLE
+  var mBtn = document.getElementById('menu-toggle'), mNav = document.getElementById('mobile-nav');
+  mBtn.addEventListener('click', function () {
+    var open = mNav.classList.toggle('hidden') === false;
+    mBtn.setAttribute('aria-expanded', String(open));
+  });
+  mNav.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') { mNav.classList.add('hidden'); mBtn.setAttribute('aria-expanded', 'false'); }
+  });
+
+  // 4. SCROLL REVEAL
+  var revealObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -12% 0px' });
+  document.querySelectorAll('.reveal').forEach(function (el) { revealObs.observe(el); });
+
+  // 5. ACTIVE NAV HIGHLIGHTING
+  var links = document.querySelectorAll('[data-nav]');
+  var navObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      links.forEach(function (l) { l.classList.toggle('active', l.dataset.nav === en.target.id); });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  ['about', 'platform', 'contact'].forEach(function (id) { navObs.observe(document.getElementById(id)); });
+</script>
+</body>
 </html>

@@ -1,7 +1,12 @@
 # navigosurg-hosting-poc
 
-A single static page used to prove out hosting for NavigoSurg. If the deployed
-page renders styled, the host is serving HTML and static assets correctly.
+The NavigoSurg marketing site: a single static page, no framework, no runtime
+dependencies. Tailwind CSS is compiled ahead of time, so the host only ever
+serves `index.html` and `styles.css`.
+
+Sections are self-contained and each carries its own heading block, so any one
+of them can be lifted into its own route later without restructuring. The
+section-to-route map is in the comment at the top of `index.html`.
 
 ## Editing styles
 
@@ -31,16 +36,28 @@ Then visit http://localhost:8080.
 
 ## Theming
 
-The page defaults to **dark mode** and offers a toggle (top right) for light.
+The page **follows the OS colour-scheme preference** by default, and offers a
+toggle (top right) to override it. An explicit choice wins over the OS setting
+from then on, and persists under the `theme` localStorage key.
 
-`dark` is hard-coded on `<html>` in the markup, so dark holds even with
-JavaScript disabled. A blocking inline script in `<head>` removes it before
-first paint if the visitor previously chose light, which avoids a flash of the
-wrong theme. The choice persists under the `navigosurg-theme` localStorage key.
+A blocking inline script in `<head>` — before the stylesheet link, so before
+first paint — reads the stored choice, falls back to
+`matchMedia('(prefers-color-scheme: dark)')`, and adds `.dark` to `<html>`.
+Running it early is what avoids a flash of the wrong theme; keep it inline and
+keep it first.
 
-`dark:` variants are class-driven, not `prefers-color-scheme`-driven — see the
-`@custom-variant dark` line in `src/input.css`. The OS setting is deliberately
-ignored, since the brief calls for dark by default.
+With JavaScript disabled the page renders light, since nothing adds the class.
+That is the trade-off for honouring the OS preference: `dark:` variants are
+class-driven rather than `prefers-color-scheme`-driven (see `@custom-variant
+dark` in `src/input.css`), which is what lets the toggle override the OS at all.
+
+Colours are semantic CSS variables (`--bg`, `--surface`, `--text`, `--accent`,
+…) declared once for `:root` and once for `.dark`, then mapped into Tailwind via
+`@theme inline`. Add a colour by adding a token pair, not a `dark:` utility.
+Two conventions worth preserving: light mode carries elevation as a soft shadow
+(`--elev`) while dark mode uses a raised surface plus a hairline border and no
+shadow at all; and `color-scheme` is set per theme so native scrollbars and form
+controls follow along.
 
 ## Deploying
 
@@ -54,10 +71,23 @@ Add any new build-time-only file to `.assetsignore`.
 
 ## Build stamp
 
-The footer shows `env`, `commit`, and `built` values so it is always clear which
-deployment you are looking at. They ship as placeholders (`local`, `0000000`,
-`not set`); substitute them at deploy time by targeting the
-`data-build="..."` attributes in `index.html`.
+No build stamp is visible on the page — the footer is the company footer now.
+The identifiers live in the comment block at the top of `index.html` as
+`__ENVIRONMENT__`, `__COMMIT__` and `__BUILD_TIME__`; substitute them at deploy
+time if you need to tell deployments apart. Reading them means viewing source,
+which is the right trade for a public marketing page.
+
+## Motion and accessibility
+
+Animation is **opt-in**: everything animated sits inside
+`@media (prefers-reduced-motion: no-preference)`, so a visitor who has asked for
+reduced motion gets the final state with no transition rather than a
+disabled-after-the-fact one. Scroll reveals add `.in` via `IntersectionObserver`;
+if that never runs the content is still in the document and visible.
+
+Interactive controls carry their own state: the theme toggle is a
+`role="switch"` with `aria-checked`, and the mobile menu button syncs
+`aria-expanded`.
 
 ## Note on installing
 

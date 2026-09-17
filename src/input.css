@@ -8,75 +8,508 @@
 
 @import "tailwindcss";
 
-/* Drive `dark:` from a class on <html> rather than the OS setting, so the
-   in-page toggle can override the visitor's system preference. */
+/* index.html sits a level up, so name it explicitly rather than relying on
+   automatic source detection. */
+@source "../index.html";
+
+/* Class-based dark mode: .dark on <html> */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Brand tokens. Tailwind v4 turns each of these into a utility, so
-   `--color-brand-500` is usable as `bg-brand-500`, `text-brand-500`, etc. */
-@theme {
-  --color-brand-50: oklch(0.97 0.02 235);
-  --color-brand-200: oklch(0.87 0.07 235);
-  --color-brand-400: oklch(0.7 0.15 235);
-  --color-brand-500: oklch(0.62 0.17 235);
-  --color-brand-600: oklch(0.54 0.16 235);
-  --color-brand-900: oklch(0.28 0.09 235);
-  --color-ink: oklch(0.21 0.02 250);
-
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+/* ── Semantic tokens ─────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --bg: #fbfcfd;
+  --surface: #f4f6f9;
+  --surface-raised: #ffffff;
+  --text: #0d1520;
+  --muted: #566072;
+  --border: rgba(0, 0, 0, 0.10);
+  --accent: #0e7490;
+  --accent-soft: #ecfeff;
+  /* light mode = soft elevation */
+  --elev: 0 1px 2px rgba(13, 21, 32, 0.04), 0 10px 28px -14px rgba(13, 21, 32, 0.12);
 }
 
+.dark {
+  color-scheme: dark;
+  --bg: #0a0d12;
+  --surface: #131820;
+  --surface-raised: #1a212c;
+  --text: #e8edf5;
+  --muted: #94a3b8;
+  --border: rgba(255, 255, 255, 0.09);
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.10);
+  /* dark mode = raised surface + hairline border, never shadow */
+  --elev: none;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
 @layer base {
-  /* Keep native UI (scrollbars, focus rings, form controls) in step with the
-     chosen theme. */
   html {
-    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
   }
-
-  html.dark {
-    color-scheme: dark;
-  }
-
-  /* The page is a single fixed screen, so the backdrop is painted on <body>
-     rather than a wrapper element. */
   body {
-    background-image: radial-gradient(
-      ellipse 80% 60% at 50% -10%,
-      var(--color-brand-50),
-      transparent 70%
-    );
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    /* 200ms theme transition — body + card surfaces only */
+    transition: background-color 200ms ease, color 200ms ease;
   }
-
-  .dark body {
-    background-image: radial-gradient(
-      ellipse 80% 60% at 50% -10%,
-      color-mix(in oklab, var(--color-brand-900) 55%, transparent),
-      transparent 70%
-    );
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--text);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
   }
 }
 
-/* Slow, subtle pulse on the status pill's dot. Tailwind's own `animate-pulse`
-   is too fast and too aggressive for a single always-on indicator. */
-@utility animate-beacon {
-  animation: beacon 2.4s ease-in-out infinite;
+/* ── Project utilities ───────────────────────────────────────── */
+
+/* Soft elevation in light, nothing in dark */
+@utility elev {
+  box-shadow: var(--elev);
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
 
-@keyframes beacon {
-  0%,
-  100% {
+/* Small-caps, letter-spaced accent eyebrow */
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Fluid display headings */
+@utility display-1 {
+  font-size: clamp(2.35rem, 1.2rem + 4.2vw, 4.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+@utility display-2 {
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.75rem);
+  line-height: 1.14;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+}
+@utility display-3 {
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+/* Diagonal hairline stripes for screenshot placeholders */
+@utility stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--border) 0 1px,
+    transparent 1px 11px
+  );
+}
+
+@utility nav-link {
+  color: var(--muted);
+  transition: color 160ms ease;
+  &:hover {
+    color: var(--text);
+  }
+  &.active {
+    color: var(--accent);
+  }
+}
+
+/* ── Motion (opt-in only) ────────────────────────────────────── */
+/* No-preference users get animation; reduced-motion users get the
+   final state with no transition at all. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.in {
     opacity: 1;
-    transform: scale(1);
+    transform: none;
   }
-  50% {
-    opacity: 0.45;
-    transform: scale(0.86);
+
+  /* Hero vessel tree draws itself in over ~3s, then holds */
+  .vessel path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: vessel-draw 1s ease-out forwards;
+  }
+  .vessel .t1 path { animation-duration: 1.1s; animation-delay: 0s; }
+  .vessel .t2 path { animation-delay: 0.75s; }
+  .vessel .t3 path { animation-delay: 1.45s; }
+  .vessel .t4 path {
+    animation: vessel-draw 0.8s ease-out 2.1s forwards,
+      vessel-pulse 5s ease-in-out 3.1s infinite;
+  }
+
+  .marquee-track {
+    animation: marquee 46s linear infinite;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-beacon {
-    animation: none;
+@keyframes vessel-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes vessel-pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.35; }
+}
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Theme toggle icons — one per theme, CSS only */
+.icon-moon { display: none; }
+.dark .icon-sun { display: none; }
+.dark .icon-moon { display: block; }
+
+/* ── Inverted-band tokens (declared alongside the theme tokens) ── */
+:root { --ink: #0d1520; --on-ink: #fbfcfd; --on-ink-muted: #aab6c8; --ink-border: rgba(255,255,255,.16); }
+.dark { --ink: #161d27; --on-ink: #e8edf5; --on-ink-muted: #9aa7ba; --ink-border: rgba(255,255,255,.10); }
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-ink-border: var(--ink-border);
+}
+
+/* Ruled index row above each section heading */
+@utility eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  &::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--color-border);
   }
+  &.on-ink::after { background: var(--ink-border); }
+}
+
+/* Tabular accent index numeral */
+@utility num {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+/* Card top rules — tier weight carried by colour, not fill */
+@utility card-rule { border-top: 2px solid var(--accent); }
+@utility card-rule-muted { border-top: 2px solid var(--text); }
+@utility card-rule-faint { border-top: 2px solid var(--muted); }
+
+/* Structural vertical hairlines (hero backdrop) */
+@utility hairgrid {
+  background-image: repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 12.5%);
+}
+
+/* Dark-mode on/off switch */
+@utility theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+@utility theme-switch-track {
+  position: relative;
+  display: block;
+  width: 3.25rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+}
+@utility theme-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 9999px;
+  background-color: var(--accent);
+  color: var(--bg);
+}
+.dark .theme-switch-knob { transform: translateX(1.5rem); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-switch-knob {
+    transition: transform 200ms cubic-bezier(0.3, 1.2, 0.5, 1), background-color 200ms ease;
+  }
+}
+
+/* ── Multitone / futuristic layer ───────────────────────────── */
+:root {
+  --accent-2: #4f46e5; --accent-3: #b45309;
+  --svg-glow: rgba(14,116,144,.30);
+  --aura-a: radial-gradient(60% 52% at 6% -8%, rgba(14,116,144,.13), rgba(0,0,0,0) 70%);
+  --aura-b: radial-gradient(55% 48% at 94% 6%, rgba(79,70,229,.11), rgba(0,0,0,0) 70%);
+  --mesh-line: rgba(13,21,32,.055);
+}
+.dark {
+  --accent-2: #a78bfa; --accent-3: #fbbf24;
+  --svg-glow: rgba(34,211,238,.45);
+  --aura-a: radial-gradient(60% 52% at 6% -8%, rgba(34,211,238,.16), rgba(0,0,0,0) 70%);
+  --aura-b: radial-gradient(55% 48% at 94% 6%, rgba(167,139,250,.14), rgba(0,0,0,0) 70%);
+  --mesh-line: rgba(232,237,245,.045);
+}
+
+@theme inline {
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+}
+
+@utility mesh-aura {
+  background-image: var(--aura-a), var(--aura-b),
+    linear-gradient(var(--mesh-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mesh-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 56px 56px, 56px 56px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+  background-position: 0 0, 0 0, center top, center top;
+  &.on-ink { --mesh-line: rgba(255,255,255,.05); }
+}
+
+@utility beam {
+  position: relative;
+  &::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; opacity: .75;
+    background: linear-gradient(90deg, transparent, var(--accent) 22%, var(--accent-2) 58%, transparent);
+  }
+}
+
+/* Tier-coloured gradient card rules */
+.card-rule, .card-rule-muted, .card-rule-faint { border-top-width: 0; position: relative; overflow: hidden; }
+.card-rule::before, .card-rule-muted::before, .card-rule-faint::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.card-rule::before { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.card-rule-muted::before { background: linear-gradient(90deg, var(--accent-2), var(--accent-3)); }
+.card-rule-faint::before { background: linear-gradient(90deg, var(--accent-3), transparent); }
+
+@utility tick {
+  position: relative;
+  &::after {
+    content: ""; position: absolute; right: .75rem; bottom: .75rem; width: 10px; height: 10px;
+    border-right: 1px solid var(--accent); border-bottom: 1px solid var(--accent); opacity: .55;
+  }
+}
+
+@utility num-xl {
+  font-size: 2.25rem; line-height: 1; font-weight: 600; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; -webkit-text-stroke: 1px currentColor; color: transparent;
+}
+
+@utility dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 9999px;
+  background: var(--accent); flex-shrink: 0;
+}
+
+@utility fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.eyebrow-row::after { background: linear-gradient(90deg, var(--accent), var(--accent-2) 30%, var(--border) 75%); }
+.eyebrow-row.on-ink::after { background: linear-gradient(90deg, var(--accent), var(--accent-2) 30%, var(--ink-border) 75%); }
+.vessel { filter: drop-shadow(0 0 7px var(--svg-glow)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse-dot { animation: dot-pulse 2.6s ease-in-out infinite; }
+}
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .35; transform: scale(.8); }
+}
+
+/* ── Logo ───────────────────────────────────────────────────── */
+@utility logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--text);
+  &:hover { color: var(--text); }
+}
+@utility logo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--surface-raised);
+  box-shadow: var(--elev);
+}
+@utility logo-mark { width: 1.375rem; height: 1.375rem; }
+@utility logo-word { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1; }
+
+/* ── Masthead + large logo ──────────────────────────────────── */
+@utility logo-tile-lg {
+  display: flex; align-items: center; justify-content: center;
+  width: 6rem; height: 6rem; flex-shrink: 0;
+  border-radius: 1rem; border: 1px solid var(--border);
+  background-color: var(--surface-raised); box-shadow: var(--elev);
+}
+@utility logo-mark-lg { width: 4rem; height: 4rem; }
+@utility masthead-word {
+  font-size: clamp(2.1rem, 1.4rem + 2.6vw, 3.5rem);
+  font-weight: 600; letter-spacing: -0.035em; line-height: 1; color: var(--text);
+}
+@utility logo-mark { width: 1.5rem; height: 1.5rem; }
+
+/* ── Masthead ground: composed, non-repeating ───────────────── */
+@utility masthead {
+  position: relative; overflow: hidden;
+  background-image: var(--aura-a), var(--aura-b);
+  background-repeat: no-repeat; background-size: 100% 100%;
+}
+@utility ground-mesh {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--mesh-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mesh-line) 1px, transparent 1px);
+  background-size: 56px 56px; background-position: center top;
+  mask-image: radial-gradient(130% 115% at 8% -10%, #000 8%, rgba(0,0,0,.4) 42%, transparent 78%);
+}
+@utility ground-reticle {
+  position: absolute; right: -7rem; top: 50%; transform: translateY(-50%);
+  width: 32rem; height: 32rem; color: var(--accent); opacity: .17; pointer-events: none;
+}
+@media (width < 900px) { .ground-reticle { display: none; } }
+
+/* ── Ground corrections: contained auras, reticle in frame ──── */
+:root {
+  --aura-a: radial-gradient(closest-side, rgba(14,116,144,.14), rgba(0,0,0,0));
+  --aura-b: radial-gradient(closest-side, rgba(79,70,229,.12), rgba(0,0,0,0));
+}
+.dark {
+  --aura-a: radial-gradient(closest-side, rgba(34,211,238,.16), rgba(0,0,0,0));
+  --aura-b: radial-gradient(closest-side, rgba(167,139,250,.13), rgba(0,0,0,0));
+}
+.masthead, .mesh-aura {
+  background-size: 38rem 22rem, 30rem 18rem, 56px 56px, 56px 56px;
+  background-position: left -10rem top -9rem, right -8rem top -5rem, center top, center top;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+}
+.masthead {
+  background-size: 38rem 22rem, 30rem 18rem;
+  background-position: left -10rem top -9rem, right -8rem top -5rem;
+}
+.ground-reticle { width: var(--reticle, 15rem); height: var(--reticle, 15rem); right: 3rem; opacity: .2; }
+@media (width < 1100px) { .ground-reticle { right: 1.5rem; --reticle: 12rem; } }
+@media (width < 900px) { .ground-reticle { display: none; } }
+
+.ground-reticle { width: var(--reticle, 11rem); height: var(--reticle, 11rem); }
+@media (width < 1100px) { .ground-reticle { --reticle: 9.5rem; } }
+
+/* ── Masthead: compact brand bar ────────────────────────────── */
+@utility masthead-pad {
+  padding-top: var(--mh, 1.75rem);
+  padding-bottom: var(--mh, 1.75rem);
+}
+@media (width >= 768px) {
+  .masthead-pad { padding-top: calc(var(--mh, 1.75rem) * 1.35); padding-bottom: calc(var(--mh, 1.75rem) * 1.35); }
+}
+.logo-tile-lg { width: 4.25rem; height: 4.25rem; border-radius: .75rem; }
+.logo-mark-lg { width: 2.75rem; height: 2.75rem; }
+.masthead-word { font-size: clamp(1.65rem, 1.2rem + 1.5vw, 2.4rem); letter-spacing: -.03em; }
+.ground-reticle { width: var(--reticle, 8rem); height: var(--reticle, 8rem); right: 2.5rem; }
+@media (width < 1100px) { .ground-reticle { --reticle: 7rem; } }
+.masthead, .mesh-aura {
+  background-size: 30rem 17rem, 24rem 14rem, 56px 56px, 56px 56px;
+  background-position: left -8rem top -7rem, right -6rem top -4rem, center top, center top;
+}
+.masthead { background-size: 30rem 17rem, 24rem 14rem; background-position: left -8rem top -7rem, right -6rem top -4rem; }
+
+/* ── Hero carries the brand lockup; no separate masthead band ── */
+.display-1 { font-size: clamp(2.1rem, 1.1rem + 3.1vw, 3.5rem); }
+.logo-tile-lg { width: 3.5rem; height: 3.5rem; border-radius: .625rem; }
+.logo-mark-lg { width: 2.25rem; height: 2.25rem; }
+.masthead-word { font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2rem); }
+.ground-reticle { width: var(--reticle, 9rem); height: var(--reticle, 9rem); right: 3rem; top: 6rem; transform: none; }
+@media (width < 1100px) { .ground-reticle { --reticle: 7.5rem; } }
+
+/* ── Reticle background removed ─────────────────────────────── */
+.ground-reticle, .ground-mesh { display: none; }
+
+/* ── Content measure ────────────────────────────────────────── */
+.max-w-6xl { max-width: var(--cw, 80rem); }
+@media (width >= 1280px) { .mx-auto.max-w-6xl { padding-left: 2.5rem; padding-right: 2.5rem; } }
+.logo-mark { width: 1.625rem; height: 1.625rem; }
+.logo-mark-lg { width: 2.5rem; height: 2.5rem; }
+
+.logo-mark { width: 1.75rem; height: 1.75rem; overflow: visible; }
+.logo-mark-lg { width: 2.75rem; height: 2.75rem; overflow: visible; }
+.logo-tile-lg { width: 3.75rem; height: 3.75rem; }
+.logo-mark { width: 1.5rem; height: 1.5rem; overflow: hidden; }
+.logo-mark-lg { width: 2.5rem; height: 2.5rem; overflow: hidden; }
+
+/* ── Founder cards ──────────────────────────────────────────── */
+@utility founder {
+  display: flex; flex-direction: column; align-items: flex-start; text-align: left; height: 100%;
+  padding: 1.25rem; border: 1px solid var(--border); border-radius: 0.625rem;
+  background-color: var(--surface-raised); box-shadow: var(--elev);
+  transition: border-color 160ms ease, background-color 200ms ease;
+  &:hover { border-color: var(--accent); }
+}
+/* Photo slot: swapping the monogram for an <img> needs no layout change */
+@utility founder-photo {
+  width: 100%; aspect-ratio: 1 / 1; border-radius: 4px; background-color: var(--surface);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  & img { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+@utility founder-mono {
+  font-size: 2.5rem; font-weight: 600; letter-spacing: 0.14em; line-height: 1;
+  color: var(--muted); padding-left: 0.14em;
+}
+@utility founder-name { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; color: var(--text); }
+@utility founder-post { margin-top: 0.5rem; font-size: 0.8rem; line-height: 1.4; color: var(--muted); }
+@utility founder-role {
+  margin-top: 0.875rem; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
 }
