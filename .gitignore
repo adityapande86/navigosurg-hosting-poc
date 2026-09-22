@@ -5,3 +5,5 @@ Thumbs.db
 
 # styles.css is intentionally NOT ignored: it is the compiled Tailwind output and
 # is committed so a plain static host can serve this repo with no build step.
+
+SCRAP/

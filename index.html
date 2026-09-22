@@ -5,10 +5,8 @@
   ═══════════════════════════════════════════════════════════════
   SECTION → FUTURE ROUTE MAP
 
-    #home      → /            Hero, marquee, clinical problem
-    #platform  → /platform    V1 scope, honest limits, approach,
-                              specified pipeline, validation, roadmap
-    #about     → /about       Company, founders, intended users
+    #home      → /            Hero, marquee, statement, where we're headed
+    #about     → /about       The team, founder cards
     #contact   → /contact     Enquiry form + direct contact details
 
   Each anchor section below is self-contained and carries its own
@@ -17,14 +15,7 @@
   href values to path values when routes exist.
 
   BUILD
-    npm run build          (Tailwind CLI: src/input.css → styles.css)
-
-  DEPLOY STAMP
-    No visible build stamp ships on this page. To identify a
-    deployment, substitute into the placeholders below at deploy time.
-      env:    __ENVIRONMENT__
-      commit: __COMMIT__
-      built:  __BUILD_TIME__
+    npx @tailwindcss/cli -i ./src/input.css -o ./styles.css --minify
   ═══════════════════════════════════════════════════════════════
 -->
 <html lang="en-IN">
@@ -33,9 +24,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%2322d3ee' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M32 58V44' stroke-width='9.5'/%3E%3Cpath d='M32 44 18 30V9' stroke-width='8'/%3E%3Cpath d='M32 44 46 30V9' stroke-width='8'/%3E%3C/g%3E%3Cpath d='M6 26 58 17' stroke='%230a0d12' stroke-width='11' stroke-linecap='round' fill='none'/%3E%3Cpath d='M6 26 58 17' stroke='%23a78bfa' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <title>NavigoSurg — Surgical visualisation and navigation software, in development</title>
-<meta name="description" content="NavigoSurg is building surgical visualisation and navigation software. The first module turns a standard triphasic CT into an interactive three-dimensional map of the liver. V1 in active development; investigational, not available for clinical use or sale.">
-<!-- 1. ANTI-FLASH: must run before the stylesheet link and first paint.
-     A stored choice wins; otherwise the OS preference decides. -->
+<meta name="description" content="NavigoSurg is building software that turns a patient's own CT scan into interactive 3D anatomy for surgical planning, starting with the liver. In development; not available for clinical use or sale.">
+<!-- 1. ANTI-FLASH: must run before the stylesheet link and first paint -->
 <script>
   try {
     var t = localStorage.getItem('theme');
@@ -46,11 +36,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body class="bg-bg text-text">
 
-<a href="#content" class="skip-link">Skip to content</a>
+<a href="#home" class="sr-only">Skip to content</a>
 
 <!-- ══ NAV ══════════════════════════════════════════════════ -->
 <header class="sticky top-0 z-50">
@@ -76,7 +66,6 @@
 
       <div class="hidden md:flex items-center gap-8 text-sm font-medium">
         <a href="#about" class="nav-link" data-nav="about">About</a>
-        <a href="#platform" class="nav-link" data-nav="platform">Platform</a>
         <a href="#contact" class="nav-link" data-nav="contact">Contact</a>
       </div>
 
@@ -110,7 +99,6 @@
     <div id="mobile-nav" class="hidden md:hidden border-t border-border bg-surface">
       <div class="mx-auto max-w-6xl px-5 py-4 flex flex-col gap-4 text-sm font-medium">
         <a href="#about" class="nav-link">About</a>
-        <a href="#platform" class="nav-link">Platform</a>
         <a href="#contact" class="nav-link">Contact</a>
         <a href="#contact" class="text-accent">Get in touch →</a>
       </div>
@@ -121,14 +109,12 @@
   <div class="bg-surface border-b border-border">
     <p class="mx-auto max-w-6xl px-5 md:px-8 py-2.5 text-xs leading-relaxed text-muted">
       <span class="dot pulse-dot"></span>
-      <span class="text-accent font-semibold tracking-wider">PRE-PRODUCTION</span>
-      <span class="px-2 text-border">/</span>
-      NavigoSurg V1 is in active development. Software described on this site is investigational, is not CE-marked or CDSCO-registered, and is not available for clinical use or sale.
+      In development. Not available for clinical use or sale.
     </p>
   </div>
 </header>
 
-<main id="content" tabindex="-1">
+<main>
 
 <!-- ══ HERO ═════════════════════════════════════════════════ -->
 <section id="home" class="bg-bg border-b border-border overflow-hidden mesh-aura">
@@ -146,22 +132,15 @@
             <path d="M6 26 58 17" stroke="var(--accent-2)" stroke-width="5.5" stroke-linecap="round" fill="none"></path>
           </svg>
         </span>
-        <div>
-          <p class="masthead-word">Navigo<span class="text-accent">Surg</span></p>
-          <p class="mt-1.5 text-xs font-semibold tracking-widest uppercase text-muted">Surgical visualisation &amp; navigation</p>
-        </div>
+        <p class="masthead-word">Navigo<span class="text-accent">Surg</span></p>
       </div>
-      <p class="eyebrow mt-10">Pre-production · V1 in development</p>
-      <h1 class="display-1 mt-6 text-balance">Surgical visualisation and navigation, designed by physicians.</h1>
-      <p class="mt-8 max-w-2xl text-lg text-text leading-relaxed text-pretty">
-        NavigoSurg is a platform for planning and navigating surgery from a patient's own imaging. Hepatic planning is the first module, not the whole of it.
-      </p>
-      <p class="mt-5 max-w-2xl text-lg text-muted leading-relaxed text-pretty">
-        The module in development, HPS-1, is software that turns a standard triphasic CT into an interactive three-dimensional map of the liver — segmental anatomy, venous architecture, and remnant volume — for surgeons planning living donor transplantation and complex resection.
+      <p class="eyebrow mt-10">Surgical visualisation &amp; navigation</p>
+      <h1 class="display-1 mt-6 text-balance">See the anatomy before the incision.</h1>
+      <p class="mt-8 max-w-2xl text-lg text-muted leading-relaxed text-pretty">
+        We're building software that turns a patient's own CT scan into interactive 3D anatomy for surgical planning, starting with the liver.
       </p>
       <div class="mt-10 flex flex-wrap items-center gap-3">
         <a href="#contact" class="inline-flex items-center bg-accent text-bg text-sm font-medium px-5 h-11 rounded-md hover:opacity-90">Get in touch</a>
-        <a href="#platform" class="inline-flex items-center border border-border bg-surface-raised text-text text-sm font-medium px-5 h-11 rounded-md hover:border-accent elev">What we're building →</a>
       </div>
     </div>
 
@@ -214,7 +193,6 @@
           <path pathLength="1" d="M300 166 C306 150 308 142 312 130"></path>
         </g>
       </svg>
-      <p class="mt-4 pt-4 border-t border-border text-center text-xs tracking-widest uppercase text-muted">Illustrative diagram — not product output</p>
     </div>
   </div>
 </section>
@@ -231,180 +209,35 @@
   </div>
 </div>
 
-<!-- ══ THE PROBLEM ══════════════════════════════════════════ -->
-<section class="bg-bg border-b border-border">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
-    <div class="lg:col-span-4 reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">The clinical problem</p></div>
-      <h2 class="display-2 mt-5 text-balance">Hepatic vascular anatomy is variant, and the planning tools aren't.</h2>
-    </div>
-    <div class="lg:col-span-7 lg:col-start-6 reveal">
-      <p class="text-lg text-muted leading-relaxed text-pretty">
-        Preoperative planning for liver surgery still depends largely on reconstructing three-dimensional vascular anatomy mentally, from axial slices. Variant anatomy is common rather than exceptional. In living donor transplantation — which accounts for the majority of liver transplants performed in India — the tolerance for a misjudged division plane is small. Existing three-dimensional planning systems address this, but most are tied to a specific vendor's hardware or to a workstation inside the radiology department, which is not where the surgical decision gets made.
-      </p>
-    </div>
+<!-- ══ STATEMENT ════════════════════════════════════════════ -->
+<section class="bg-bg border-b border-border beam mesh-aura">
+  <div class="mx-auto max-w-6xl px-5 md:px-8 py-28 md:py-40">
+    <p class="statement reveal text-balance">Surgeons often still rebuild 3D anatomy in their heads from flat CT slices. That should be the software's job.</p>
   </div>
 </section>
 
-<!-- ══ WHAT WE'RE BUILDING ══════════════════════════════════ -->
-<section id="platform" class="bg-surface border-b border-border beam mesh-aura">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
-    <div class="max-w-3xl reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">V1 scope</p></div>
-      <h2 class="display-2 mt-5 text-balance">What V1 is designed to do</h2>
-      <p class="mt-6 text-lg text-muted leading-relaxed text-pretty">
-        V1 is a pilot-grade build with a deliberately narrow scope. What follows is the specification we are building to, not a description of shipped software.
-      </p>
-    </div>
-
-    <div class="mt-14 grid grid-cols-1 md:grid-cols-2 gap-5">
-      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
-        <h3 class="display-3 mt-4">Segmental and venous segmentation</h3>
-        <p class="mt-3 text-muted leading-relaxed">Automated segmentation of liver parenchyma, the Couinaud segments, and the portal and hepatic venous trees from a standard triphasic CT.</p>
-      </article>
-      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
-        <h3 class="display-3 mt-4">Volumetry</h3>
-        <p class="mt-3 text-muted leading-relaxed">Total, lobar and segmental volumes, and future liver remnant volume computed from a planned division plane rather than estimated from a formula.</p>
-      </article>
-      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
-        <h3 class="display-3 mt-4">Virtual resection</h3>
-        <p class="mt-3 text-muted leading-relaxed">Define a resection plane on the three-dimensional model and see the resulting remnant and specimen.</p>
-      </article>
-      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 pt-8 elev tick">
-        <h3 class="display-3 mt-4">Vessel measurement at the cut plane</h3>
-        <p class="mt-3 text-muted leading-relaxed">Branch diameter and cross-sectional area at the division surface — the measurements that inform anastomosis planning.</p>
-      </article>
-    </div>
-
-    <!-- Screenshot placeholder — no fabricated interface -->
-    <div class="reveal mt-5 stripes border border-border rounded-lg h-56 md:h-72 flex items-center justify-center">
-      <p class="px-5 text-center text-xs tracking-widest uppercase text-muted">Product screenshot — V1 in development</p>
-    </div>
-
-    <div class="reveal mt-12 border border-border bg-accent-soft rounded-lg p-7 md:p-9 max-w-3xl">
-      <p class="text-xs font-semibold tracking-widest uppercase text-text">Known limits of V1</p>
-      <p class="mt-4 text-muted leading-relaxed text-pretty">
-        Arterial tree reconstruction is staged behind a confidence threshold and will not display for every case. Biliary anatomy is limited to the extrahepatic duct. Several outputs are heuristic estimates and are labelled as such in the interface. Every output is intended for review against the source CT, not in place of it.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ══ APPROACH ═════════════════════════════════════════════ -->
-<section class="bg-bg border-b border-border">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
-    <div class="max-w-3xl reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Approach</p></div>
-      <h2 class="display-2 mt-5 text-balance">Three decisions that shape the product</h2>
-    </div>
-    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
-      <div class="reveal card-rule pt-8">
-        <h3 class="display-3">Measurement at the division plane</h3>
-        <p class="mt-3 text-muted leading-relaxed">Parenchymal and segmental segmentation is increasingly available, including from open-source tooling. Our focus is the layer above it: what the vessels are doing where the surgeon intends to cut.</p>
-      </div>
-      <div class="reveal card-rule-muted pt-8">
-        <h3 class="display-3">Cross-platform by design</h3>
-        <p class="mt-3 text-muted leading-relaxed">Built as web software so it opens on a tablet at the bedside or a laptop at a referring centre, rather than on one workstation in one department.</p>
-      </div>
-      <div class="reveal card-rule-faint pt-8">
-        <h3 class="display-3">Clinical logic owned in-house</h3>
-        <p class="mt-3 text-muted leading-relaxed">Segmentation is engineering. Deciding which measurements matter, how variant anatomy is classified, and what the interface should refuse to assert is clinical work, and it sits with the founders.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ HOW IT WILL WORK ═════════════════════════════════════ -->
-<section class="bg-surface border-b border-border">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
-    <div class="lg:col-span-4 reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Specified pipeline</p></div>
-      <h2 class="display-2 mt-5 text-balance">How it will work</h2>
-    </div>
-    <ol class="lg:col-span-7 lg:col-start-6 flex flex-col">
-      <li class="reveal flex gap-6 border-t border-border py-7">
-        <span class="num text-accent shrink-0 w-7 pt-1">01</span>
-        <div>
-          <h3 class="display-3">DICOM ingest</h3>
-          <p class="mt-2 text-muted leading-relaxed">Standard triphasic CT, no special acquisition protocol.</p>
-        </div>
-      </li>
-      <li class="reveal flex gap-6 border-t border-border py-7">
-        <span class="num text-accent-2 shrink-0 w-7 pt-1">02</span>
-        <div>
-          <h3 class="display-3">Segmentation</h3>
-          <p class="mt-2 text-muted leading-relaxed">Parenchyma, Couinaud segments, portal and hepatic venous trees.</p>
-        </div>
-      </li>
-      <li class="reveal flex gap-6 border-t border-border py-7">
-        <span class="num text-accent-3 shrink-0 w-7 pt-1">03</span>
-        <div>
-          <h3 class="display-3">Reconstruction</h3>
-          <p class="mt-2 text-muted leading-relaxed">Interactive three-dimensional model with cross-reference back to the source slices.</p>
-        </div>
-      </li>
-      <li class="reveal flex gap-6 border-t border-border py-7">
-        <span class="num text-accent shrink-0 w-7 pt-1">04</span>
-        <div>
-          <h3 class="display-3">Planning</h3>
-          <p class="mt-2 text-muted leading-relaxed">Virtual resection plane, remnant volumetry, vessel measurement at the cut surface.</p>
-        </div>
-      </li>
-      <li class="reveal flex gap-6 border-t border-b border-border py-7">
-        <span class="num text-accent-2 shrink-0 w-7 pt-1">05</span>
-        <div>
-          <h3 class="display-3">Review</h3>
-          <p class="mt-2 text-muted leading-relaxed">Outputs presented alongside the source CT, with heuristic values flagged as estimates.</p>
-        </div>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ══ VALIDATION ═══════════════════════════════════════════ -->
-<section class="bg-ink border-b border-border beam mesh-aura on-ink">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-10">
-    <div class="lg:col-span-4 reveal">
-      <div class="eyebrow-row on-ink"><span class="dot"></span><p class="eyebrow">Validation</p></div>
-      <h2 class="display-2 mt-5 text-balance text-on-ink">How we intend to demonstrate that it works</h2>
-    </div>
-    <div class="lg:col-span-7 lg:col-start-6 reveal">
-      <p class="text-lg text-on-ink-muted leading-relaxed text-pretty">
-        Accuracy claims should rest on measurement, so we are not making any yet. Planned standalone performance evaluation covers Dice similarity for parenchymal and segmental segmentation against a radiologist-established reference standard; per-branch detection sensitivity and false-branch rate for the venous trees; and absolute and percentage volumetric error against manual volumetry. A portion of the evaluation dataset is held back from anyone involved in development, and performance will be reported stratified by scanner, slice thickness and contrast timing. Results will be published here when they exist.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ══ ROADMAP ══════════════════════════════════════════════ -->
+<!-- ══ WHERE WE'RE HEADED ═══════════════════════════════════ -->
 <section class="bg-surface border-b border-border">
   <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
-    <div class="max-w-3xl reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Roadmap</p></div>
-      <h2 class="display-2 mt-5 text-balance">The first module of a larger platform</h2>
-      <p class="mt-6 text-lg text-muted leading-relaxed text-pretty">
-        Hepatic planning is where we start, not where we stop. NavigoSurg is designed as a surgical visualisation and navigation platform that extends into further specialties and, in time, into the operating theatre itself.
-      </p>
-    </div>
-
-    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
-      <article class="reveal bg-surface-raised border border-border card-rule rounded-lg p-7 md:p-8 elev flex flex-col">
-        <p class="text-xs font-semibold tracking-widest uppercase text-accent">In development</p>
-        <p class="mt-2 text-xs tracking-wide text-muted">Funded, under active build</p>
-        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-text text-pretty">HPS-1 — pre-operative planning for liver resection and living donor transplantation. Segmentation, volumetry, virtual resection and vessel measurement at the division plane.</p>
+    <div class="eyebrow-row reveal"><span class="dot"></span><p class="eyebrow">Where we're headed</p></div>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+      <article class="reveal bg-surface-raised border border-border rounded-lg p-6 flex flex-col justify-between gap-6 elev">
+        <p class="display-3">Liver surgical planning</p>
+        <p class="stage-tag text-accent">In development</p>
       </article>
-      <article class="reveal bg-surface-raised border border-border card-rule-muted rounded-lg p-7 md:p-8 elev flex flex-col">
-        <p class="text-xs font-semibold tracking-widest uppercase text-accent-2">Planned</p>
-        <p class="mt-2 text-xs tracking-wide text-muted">Specified, not yet funded</p>
-        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-muted text-pretty">Arterial tree reconstruction with variant classification. Additional surgical specialties, beginning where anatomy is most variable. Patient-specific anatomical models and surgical guides, produced from the same segmentation that drives the planning software — printing through established manufacturing partners rather than in-house.</p>
+      <article class="reveal bg-surface-raised border border-border rounded-lg p-6 flex flex-col justify-between gap-6 elev">
+        <p class="display-3">More surgical specialties</p>
+        <p class="stage-tag text-muted">Planned</p>
       </article>
-      <article class="reveal bg-surface-raised border border-border card-rule-faint rounded-lg p-7 md:p-8 elev flex flex-col">
-        <p class="text-xs font-semibold tracking-widest uppercase text-accent-3">Long term</p>
-        <p class="mt-2 text-xs tracking-wide text-muted">Direction, not commitment</p>
-        <p class="mt-6 pt-6 border-t border-border leading-relaxed text-muted text-pretty">Extended-reality surgical rehearsal, and intraoperative visualisation that carries the pre-operative plan to the table. This is a multi-year engineering programme and we describe it as a direction rather than a roadmap item.</p>
+      <article class="reveal bg-surface-raised border border-border rounded-lg p-6 flex flex-col justify-between gap-6 elev">
+        <p class="display-3">Patient-specific 3D-printed models</p>
+        <p class="stage-tag text-muted">Planned</p>
+      </article>
+      <article class="reveal bg-surface-raised border border-border rounded-lg p-6 flex flex-col justify-between gap-6 elev">
+        <p class="display-3">Extended reality in the operating theatre</p>
+        <p class="stage-tag text-muted">Long term</p>
       </article>
     </div>
-    <p class="reveal mt-6 max-w-2xl text-sm text-muted leading-relaxed">Only the first tier is funded and under active development. Everything below it is stated as intent.</p>
   </div>
 </section>
 
@@ -414,7 +247,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       <div class="lg:col-span-4 reveal">
         <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">The team</p></div>
-        <h2 class="display-2 mt-5 text-balance">Our Team</h2>
+        <h2 class="display-2 mt-5 text-balance">Founded by three practising doctors</h2>
       </div>
       <div class="lg:col-span-7 lg:col-start-6 reveal">
         <p class="text-lg text-muted leading-relaxed text-pretty">
@@ -452,36 +285,14 @@
   </div>
 </section>
 
-<!-- ══ WHO IT'S FOR ═════════════════════════════════════════ -->
-<section class="bg-surface border-b border-border">
-  <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28">
-    <div class="eyebrow-row reveal"><span class="dot"></span><p class="eyebrow">Intended users</p></div>
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="reveal card-rule border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
-        <p class="display-3">Hepatobiliary and transplant surgeons</p>
-      </div>
-      <div class="reveal card-rule-muted border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
-        <p class="display-3">Liver transplant programmes</p>
-      </div>
-      <div class="reveal card-rule-faint border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
-        <p class="display-3">Radiologists in preoperative evaluation</p>
-      </div>
-      <div class="reveal card-rule border border-border rounded-lg bg-surface-raised p-6 pt-7 elev">
-        <p class="display-3">Surgical training and fellowship programmes</p>
-      </div>
-    </div>
-    <p class="reveal mt-10 text-sm text-muted">We are currently seeking pilot collaborators rather than customers.</p>
-  </div>
-</section>
-
 <!-- ══ CONTACT ══════════════════════════════════════════════ -->
 <section id="contact" class="bg-bg border-b border-border beam mesh-aura">
   <div class="mx-auto max-w-6xl px-5 md:px-8 py-20 md:py-28 grid grid-cols-1 lg:grid-cols-12 gap-12">
     <div class="lg:col-span-5 reveal">
-      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Get in touch</p></div>
-      <h2 class="display-2 mt-5 text-balance">We're looking for pilot sites and clinical collaborators</h2>
+      <div class="eyebrow-row"><span class="dot"></span><p class="eyebrow">Contact</p></div>
+      <h2 class="display-2 mt-5 text-balance">Interested in collaborating?</h2>
       <p class="mt-6 text-muted leading-relaxed text-pretty">
-        If you run a transplant or hepatobiliary programme, or you'd like to follow the development, get in touch. We are not selling anything yet.
+        We'd like to hear from surgeons, transplant teams and researchers.
       </p>
       <div class="mt-8 flex flex-col gap-2 border-t border-border pt-6 text-sm">
         <a href="mailto:info.navigosurg@gmail.com" class="text-accent">info.navigosurg@gmail.com</a>
@@ -552,29 +363,27 @@
         </span>
         <span class="logo-word">Navigo<span class="text-accent">Surg</span></span>
       </span>
-      <p class="mt-3 text-sm text-muted leading-relaxed">Surgical visualisation and navigation software. In development.</p>
+      <p class="mt-3 text-sm text-muted leading-relaxed">Surgical visualisation &amp; navigation. In development.</p>
     </div>
     <nav class="md:col-span-3">
       <p class="text-xs font-semibold tracking-widest uppercase text-muted">Navigation</p>
       <div class="mt-4 flex flex-col gap-2 text-sm">
         <a href="#home" class="nav-link">Home</a>
         <a href="#about" class="nav-link">About</a>
-        <a href="#platform" class="nav-link">Platform</a>
         <a href="#contact" class="nav-link">Contact</a>
       </div>
     </nav>
     <div class="md:col-span-4">
       <p class="text-xs font-semibold tracking-widest uppercase text-muted">Company</p>
       <div class="mt-4 flex flex-col gap-2 text-sm text-muted leading-relaxed">
-        <p class="text-text">NavigoSurg Private Limited</p>
-        <p>CIN: U32509ME2026PTC475792</p>
-        <p>Registered office: C/o Pande Memorial Hospital, P. R. Sathe Marg, Dhantoli, Nagpur, Maharashtra 440012, India</p>
+        <p class="text-text">NavigoSurg Private Limited · CIN U32509ME2026PTC475792</p>
+        <p>C/o Pande Memorial Hospital, P. R. Sathe Marg, Dhantoli, Nagpur, Maharashtra 440012</p>
       </div>
     </div>
   </div>
   <div class="border-t border-border">
     <p class="mx-auto max-w-6xl px-5 md:px-8 py-6 text-xs text-muted leading-relaxed">
-      © 2026 NavigoSurg Private Limited. Software described on this site is investigational and not available for clinical use or sale.
+      © 2026 NavigoSurg Private Limited
     </p>
   </div>
 </footer>
@@ -619,7 +428,7 @@
       links.forEach(function (l) { l.classList.toggle('active', l.dataset.nav === en.target.id); });
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
-  ['about', 'platform', 'contact'].forEach(function (id) { navObs.observe(document.getElementById(id)); });
+  ['about', 'contact'].forEach(function (id) { navObs.observe(document.getElementById(id)); });
 </script>
 </body>
 </html>
