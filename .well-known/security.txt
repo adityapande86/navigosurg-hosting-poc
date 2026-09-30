@@ -1,0 +1,24 @@
+# Security contact for NavigoSurg Private Limited.
+# Format: RFC 9116 — https://www.rfc-editor.org/rfc/rfc9116
+#
+# Served from /.well-known/security.txt, which is the only location scanners
+# and researchers check. Keep it there.
+#
+# Expires is a required field and must stay in the future, so this file needs
+# a deliberate renewal once a year. An expired security.txt is treated as no
+# security.txt at all.
+
+Contact: mailto:info.navigosurg@gmail.com
+Expires: 2027-09-29T00:00:00.000Z
+Preferred-Languages: en
+
+# Deliberately omitted, each because the thing it would point at does not
+# exist yet. Adding a field that resolves to nothing is worse than leaving it
+# out — it costs a researcher a round trip and signals a process we do not
+# have.
+#
+#   Canonical    needs the final production hostname; add once the domain is
+#                fixed, as: Canonical: https://<host>/.well-known/security.txt
+#   Policy       needs a published disclosure policy page
+#   Encryption   needs a PGP key hosted at a stable URL
+#   Acknowledgments, Hiring, CSAF

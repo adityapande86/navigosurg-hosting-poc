@@ -69,6 +69,25 @@ which otherwise fails the build on oversized binaries
 
 Add any new build-time-only file to `.assetsignore`.
 
+## Security contact
+
+`.well-known/security.txt` publishes where to report a vulnerability, per
+[RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). Two things about it need
+active maintenance:
+
+- **`Expires` must stay in the future.** It is currently 2027-09-29. An expired
+  `security.txt` is treated as absent, so renewing it is a yearly chore, not a
+  set-and-forget.
+- **`Canonical` is deliberately absent** until the production hostname is
+  settled, along with `Policy` and `Encryption`, which have nothing to point at
+  yet. The file itself lists them and says why.
+
+The path must stay `/.well-known/security.txt` — that is the only place
+scanners look. Because it is a dot-prefixed directory, confirm it actually
+serves in production (`curl -i https://<host>/.well-known/security.txt` should
+give `200` and `text/plain`); some static hosts skip hidden paths on upload,
+and Cloudflare's Workers-assets docs do not state either way.
+
 ## Build stamp
 
 No build stamp is visible on the page — the footer is the company footer now.

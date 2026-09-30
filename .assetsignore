@@ -13,7 +13,8 @@ src
 package.json
 package-lock.json
 
-# Repo housekeeping. Only index.html and styles.css should be served.
+# Repo housekeeping. The only paths that should be served are index.html,
+# styles.css and .well-known/security.txt.
 .claude
 README.md
 .gitignore
